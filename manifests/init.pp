@@ -19,6 +19,7 @@ class collectd (
   $plugin_conf_dir_mode    = $collectd::params::plugin_conf_dir_mode,
   $purge                   = $collectd::params::purge,
   $purge_config            = $collectd::params::purge_config,
+  $concat_config           = $collectd::params::concat_config,
   $read_threads            = $collectd::params::read_threads,
   $recurse                 = $collectd::params::recurse,
   $root_group              = $collectd::params::root_group,

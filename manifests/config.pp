@@ -13,6 +13,7 @@ class collectd::config (
   $root_group             = $collectd::root_group,
   $purge                  = $collectd::purge,
   $purge_config           = $collectd::purge_config,
+  $concat_config          = $collectd::concat_config,
   $read_threads           = $collectd::read_threads,
   $timeout                = $collectd::timeout,
   $typesdb                = $collectd::typesdb,
@@ -26,9 +27,32 @@ class collectd::config (
     default => $conf_content,
   }
 
-  file { 'collectd.conf':
-    path    => $config_file,
-    content => $_conf_content,
+  if $concat_config {
+    concat { $config_file:
+      ensure         => present,
+      owner          => 'root',
+      group          => $::collectd::root_group,
+      ensure_newline => false,
+    }
+
+    concat::fragment { 'header':
+      target  => $config_file, 
+      content => $_conf_content,
+      order   => 0,
+    }
+    concat::fragment { 'footer':
+      target  => $config_file, 
+      content => "\n",
+      order   => 999,
+    }
+    collectd::typesdb { $typesdb:
+      mode => '0644',
+    }
+  } else {
+    file { 'collectd.conf':
+      path    => $config_file,
+      content => $_conf_content,
+    }
   }
 
   if $purge_config != true and !$_conf_content {

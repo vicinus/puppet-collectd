@@ -9,6 +9,7 @@ class collectd::params {
   $internal_stats          = false
   $purge                   = undef
   $purge_config            = false
+  $concat_config           = false
   $recurse                 = undef
   $read_threads            = 5
   $write_threads           = 5
