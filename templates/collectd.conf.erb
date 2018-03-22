@@ -11,8 +11,6 @@ FQDNLookup true
 <% if not @concat_config -%>
 <% if @typesdb and not @typesdb.empty? -%>
 TypesDB<% @typesdb.each do |path| -%> "<%= path %>"<% end %>
-<% else -%>
-#TypesDB "/usr/share/collectd/types.db" "/etc/collectd/my_types.db"
 <% end -%>
 <% end -%>
 <% if @write_queue_limit_high -%>

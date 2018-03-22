@@ -1,25 +1,26 @@
 # private
 class collectd::config (
-  $collectd_hostname      = $collectd::collectd_hostname,
-  $config_file            = $collectd::config_file,
-  $conf_content           = $collectd::conf_content,
-  $fqdnlookup             = $collectd::fqdnlookup,
-  $include                = $collectd::include,
-  $internal_stats         = $collectd::internal_stats,
-  $interval               = $collectd::interval,
-  $plugin_conf_dir        = $collectd::plugin_conf_dir,
-  $plugin_conf_dir_mode   = $collectd::plugin_conf_dir_mode,
-  $recurse                = $collectd::recurse,
-  $root_group             = $collectd::root_group,
-  $purge                  = $collectd::purge,
-  $purge_config           = $collectd::purge_config,
-  $concat_config          = $collectd::concat_config,
-  $read_threads           = $collectd::read_threads,
-  $timeout                = $collectd::timeout,
-  $typesdb                = $collectd::typesdb,
-  $write_queue_limit_high = $collectd::write_queue_limit_high,
-  $write_queue_limit_low  = $collectd::write_queue_limit_low,
-  $write_threads          = $collectd::write_threads,
+  $collectd_hostname                    = $collectd::collectd_hostname,
+  Stdlib::Absolutepath $config_file     = $collectd::config_file,
+  $conf_content                         = $collectd::conf_content,
+  Boolean $fqdnlookup                   = $collectd::fqdnlookup,
+  Boolean $has_wordexp                  = $collectd::has_wordexp,
+  Array $include                        = $collectd::include,
+  Boolean $internal_stats               = $collectd::internal_stats,
+  Integer $interval                     = $collectd::interval,
+  Stdlib::Absolutepath $plugin_conf_dir = $collectd::plugin_conf_dir,
+  $plugin_conf_dir_mode                 = $collectd::plugin_conf_dir_mode,
+  $recurse                              = $collectd::recurse,
+  $root_group                           = $collectd::root_group,
+  $purge                                = $collectd::purge,
+  Boolean $purge_config                 = $collectd::purge_config,
+  Boolean $concat_config                = $collectd::concat_config,
+  Integer $read_threads                 = $collectd::read_threads,
+  Integer $timeout                      = $collectd::timeout,
+  Array $typesdb                        = $collectd::typesdb,
+  $write_queue_limit_high               = $collectd::write_queue_limit_high,
+  $write_queue_limit_low                = $collectd::write_queue_limit_low,
+  Integer $write_threads                = $collectd::write_threads,
 ) {
 
   $_conf_content = $purge_config ? {
@@ -79,4 +80,7 @@ class collectd::config (
     purge   => $purge,
     recurse => $recurse,
   }
+
+  File['collectd.d'] -> Concat <| tag == 'collectd' |>
+
 }
